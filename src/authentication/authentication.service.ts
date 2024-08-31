@@ -12,12 +12,7 @@ export class AuthenticationService {
     private jwtService: JwtService,
   ) {}
 
-  async adminSignup(
-    name: string,
-    email: string,
-    role: string,
-    password: string,
-  ) {
+  async adminSignup(name: string, email: string, password: string) {
     const userExist = await this.userModel.findOne({ email });
 
     if (userExist) {
@@ -39,7 +34,7 @@ export class AuthenticationService {
     return { withoutPassword };
   }
 
-  async signup(name: string, email: string, role: string, password: string) {
+  async signup(name: string, email: string, password: string) {
     const userExist = await this.userModel.findOne({ email });
 
     if (userExist) {
@@ -66,6 +61,13 @@ export class AuthenticationService {
 
     if (!userExist) {
       throw new HttpException('wrong credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    if (userExist.isBanned) {
+      throw new HttpException(
+        'You are banned from accessing this resource.',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     const passwordMatch = await bcrypt.compare(password, userExist.password);

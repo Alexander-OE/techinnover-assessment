@@ -11,7 +11,6 @@ export class AuthenticationController {
     return this.authenticationService.adminSignup(
       signupDto.name,
       signupDto.email,
-      signupDto.role,
       signupDto.password,
     );
   }
@@ -21,7 +20,6 @@ export class AuthenticationController {
     return this.authenticationService.signup(
       signupDto.name,
       signupDto.email,
-      signupDto.role,
       signupDto.password,
     );
   }
