@@ -2,22 +2,24 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product } from 'src/schemas/Product.schema';
-import { User } from 'src/schemas/User.schema';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
-    @InjectModel(Product.name) private productSchema: Model<Product>,
+    @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
 
-  async create(
+  async getApprovedProducts() {
+    return await this.productModel.find({ isApproved: true });
+  }
+
+  async createProduct(
     name: string,
     description: string,
     price: number,
     userId: string,
   ) {
-    const productExist = await this.productSchema.findOne({
+    const productExist = await this.productModel.findOne({
       name,
       description,
     });
@@ -25,7 +27,7 @@ export class UserService {
     if (productExist) {
       throw new HttpException('Product already exists', HttpStatus.BAD_REQUEST);
     }
-    const product = new this.productSchema({
+    const product = new this.productModel({
       name,
       description,
       price: price.toFixed(2).toString(),
@@ -35,13 +37,13 @@ export class UserService {
     return await product.save();
   }
 
-  async update(
+  async updateProduct(
     name: string,
     description: string,
     price: number,
     productId: string,
   ) {
-    const result = await this.productSchema.findByIdAndUpdate(
+    const result = await this.productModel.findByIdAndUpdate(
       { _id: productId },
       {
         name,
@@ -58,8 +60,8 @@ export class UserService {
     return 'Product successfully updated';
   }
 
-  async delete(productId: string) {
-    const result = await this.productSchema.findByIdAndDelete({
+  async deleteProduct(productId: string) {
+    const result = await this.productModel.findByIdAndDelete({
       _id: productId,
     });
     if (!result) {

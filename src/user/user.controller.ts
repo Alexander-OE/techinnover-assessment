@@ -6,25 +6,31 @@ import {
   Body,
   UseGuards,
   Param,
+  Get,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserProductDto, UserProductDto } from './dto/Userproduct.dto';
 import { AuthenticationGuard } from 'src/common/gaurds/authentication/authentication.guard';
 import { CurrentUser } from 'src/common/decorators/currentUser.decorator';
 
-@UseGuards(AuthenticationGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get('')
+  getApprovedProducts() {
+    return this.userService.getApprovedProducts();
+  }
+
+  @UseGuards(AuthenticationGuard)
   @Post('')
-  create(
+  createProduct(
     @Body() userProductDto: UserProductDto,
     @CurrentUser() user: { id: string },
   ) {
     const userId = user?.id;
 
-    return this.userService.create(
+    return this.userService.createProduct(
       userProductDto.name,
       userProductDto.description,
       userProductDto.price,
@@ -32,12 +38,13 @@ export class UserController {
     );
   }
 
+  @UseGuards(AuthenticationGuard)
   @Patch(':productId')
-  update(
+  updateProduct(
     @Param('productId') productId: string,
     @Body() updateUserProductDto: UpdateUserProductDto,
   ) {
-    return this.userService.update(
+    return this.userService.updateProduct(
       updateUserProductDto.name,
       updateUserProductDto.description,
       updateUserProductDto.price,
@@ -45,8 +52,9 @@ export class UserController {
     );
   }
 
+  @UseGuards(AuthenticationGuard)
   @Delete(':productId')
-  delete(@Param('productId') productId: string) {
-    return this.userService.delete(productId);
+  deleteProduct(@Param('productId') productId: string) {
+    return this.userService.deleteProduct(productId);
   }
 }

@@ -5,3 +5,9 @@ export class AdminDto {
   @IsNotEmpty()
   isBanned: boolean;
 }
+
+export class ApproveProductDto {
+  @IsNotEmpty()
+  @IsBoolean()
+  isApproved: boolean;
+}
