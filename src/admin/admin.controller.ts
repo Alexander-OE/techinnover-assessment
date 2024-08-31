@@ -17,16 +17,16 @@ import { RoleGuard } from 'src/common/gaurds/role/role.guard';
 
 @UseGuards(AuthenticationGuard, RoleGuard)
 @Roles(Role.Admin)
-@Controller('admin')
+@Controller('admin/user')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-  @Get('user/all')
+  @Get('all')
   getAllusers() {
     return this.adminService.getAllusers();
   }
 
-  @Patch('user/:id')
+  @Patch(':id')
   updateUser(@Param('id') id: number, @Body() adminDto: AdminDto) {
     if (!id) {
       throw new HttpException('ID must be provided', HttpStatus.BAD_REQUEST);

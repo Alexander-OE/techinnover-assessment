@@ -10,7 +10,7 @@ export class Product {
   description: string;
 
   @Prop({ required: true })
-  price: number;
+  price: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   userId: mongoose.Schema.Types.ObjectId;
