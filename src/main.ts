@@ -10,9 +10,12 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('E-Commerce')
+    .setDescription(
+      'This API provides functionalities for a simple e-commerce system, allowing users to browse products, manage their own products, and enabling admins to manage users and products.',
+    )
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
