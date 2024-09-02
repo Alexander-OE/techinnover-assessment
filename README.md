@@ -57,7 +57,34 @@ This project is an E-Commerce API built using NestJS, designed to provide a plat
    http://localhost:3000/api
       ```
 
+ ## API Functionalities
+   **User Management**
+   
+  - **Signup**: Users can register with a name, email, and password.
+   
+  - **Login**: Users can log in using their email and password.
+    
+  - **Role-Based Access**:
+    
+      - Only admins can view, ban, or unban users.
+     
+      - Banned users cannot log in or interact with the system.
 
+   **Product Management**
+   
+   - **Authenticated Users**:
+     
+      - Can create, update, and delete their own products.
+        
+   - **Admins**:
+     
+     - Can approve or disapprove products.
+       
+     - Only approved products are visible to unauthenticated users.
+       
+   - **Unauthenticated Users**:
+   
+      - Can view only approved products.
    
 
    
